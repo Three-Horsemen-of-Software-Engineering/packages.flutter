@@ -5,14 +5,13 @@ import 'dart:js' as js;
 import 'dart:js_util';
 import 'dart:typed_data';
 
-import 'package:meta/meta.dart';
 import 'package:native_pdf_renderer/src/web/pdfjs.dart';
 
 class Page {
   Page({
-    @required this.id,
-    @required this.documentId,
-    @required this.page,
+    required this.id,
+    required this.documentId,
+    required this.page,
   }) : _viewport = page.getViewport(Settings()..scale = 1.0);
 
   final String id, documentId;
@@ -22,6 +21,7 @@ class Page {
   int get number => page.pageNumber;
 
   int get width => _viewport.width.toInt();
+
   int get height => _viewport.height.toInt();
 
   Map<String, dynamic> get infoMap => {
@@ -35,12 +35,13 @@ class Page {
   void close() {}
 
   Future<Data> render({
-    int width,
-    int height,
+    required int width,
+    required int height,
   }) async {
     final html.CanvasElement canvas =
         js.context['document'].createElement('canvas');
-    final html.CanvasRenderingContext2D context = canvas.getContext('2d');
+    final html.CanvasRenderingContext2D context =
+        canvas.getContext('2d')! as html.CanvasRenderingContext2D;
 
     final viewport =
         page.getViewport(Settings()..scale = width / _viewport.width);
@@ -62,7 +63,7 @@ class Page {
     final reader = html.FileReader()..readAsArrayBuffer(blob);
     reader.onLoadEnd.listen(
       (html.ProgressEvent e) {
-        data.add(reader.result);
+        data.add(reader.result! as List<int>);
         completer.complete();
       },
     );
@@ -78,9 +79,9 @@ class Page {
 
 class Data {
   const Data({
-    @required this.width,
-    @required this.height,
-    @required this.data,
+    required this.width,
+    required this.height,
+    required this.data,
   });
 
   final int width, height;

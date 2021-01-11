@@ -5,12 +5,12 @@ part of 'page.dart';
 /// of [PdfPage]
 class PdfPageImage {
   const PdfPageImage._({
-    @required this.id,
-    @required this.pageNumber,
-    @required this.width,
-    @required this.height,
-    @required this.bytes,
-    @required this.format,
+    required this.id,
+    required this.pageNumber,
+    required this.width,
+    required this.height,
+    required this.bytes,
+    required this.format,
   });
 
   static const MethodChannel _channel = MethodChannel('io.scer.pdf.renderer');
@@ -42,13 +42,13 @@ class PdfPageImage {
   /// [format] - image type, all types can be seen here [PdfPageFormat]
   /// [crop] - render only the necessary part of the image
   static Future<PdfPageImage> _render({
-    @required String pageId,
-    @required int pageNumber,
-    @required int width,
-    @required int height,
-    @required PdfPageFormat format,
-    @required String backgroundColor,
-    @required Rect crop,
+    required String pageId,
+    required int pageNumber,
+    required int width,
+    required int height,
+    required PdfPageFormat format,
+    required String? backgroundColor,
+    required Rect? crop,
   }) async {
     if (format == PdfPageFormat.WEBP && Platform.isIOS) {
       throw PdfNotSupportException(
@@ -66,14 +66,15 @@ class PdfPageImage {
       'format': format.value,
       'backgroundColor': backgroundColor,
       'crop': crop != null,
-      'crop_x': crop?.left?.toInt(),
-      'crop_y': crop?.top?.toInt(),
-      'crop_height': crop?.height?.toInt(),
-      'crop_width': crop?.width?.toInt(),
+      'crop_x': crop?.left.toInt(),
+      'crop_y': crop?.top.toInt(),
+      'crop_height': crop?.height.toInt(),
+      'crop_width': crop?.width.toInt(),
     });
 
     if (!(obj is Map<dynamic, dynamic>)) {
-      return null;
+      throw StateError('Expected Map<dynamic, dynamic> as native `render` '
+          'method result, but got $obj');
     }
 
     final retWidth = obj['width'] as int, retHeight = obj['height'] as int;

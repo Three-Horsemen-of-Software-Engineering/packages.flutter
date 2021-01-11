@@ -5,7 +5,6 @@ import 'dart:typed_data' show Uint8List;
 import 'package:extension/enum.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 import 'document.dart';
 
@@ -26,12 +25,12 @@ class PdfPageFormat extends Enum<int> {
 /// which contains a method [render] for rendering into an image
 class PdfPage {
   PdfPage({
-    @required this.document,
-    @required this.id,
-    @required this.pageNumber,
-    @required this.width,
-    @required this.height,
-    @required Lock lock,
+    required this.document,
+    required this.id,
+    required this.pageNumber,
+    required this.width,
+    required this.height,
+    required Lock lock,
   }) : _lock = lock;
 
   static const MethodChannel _channel = MethodChannel('io.scer.pdf.renderer');
@@ -65,11 +64,11 @@ class PdfPage {
   /// [format] - image type, all types can be seen here [PdfPageFormat]
   /// [cropRect] - render only the necessary part of the image
   Future<PdfPageImage> render({
-    @required int width,
-    @required int height,
+    required int width,
+    required int height,
     PdfPageFormat format = PdfPageFormat.PNG,
-    String backgroundColor,
-    Rect cropRect,
+    String? backgroundColor,
+    Rect? cropRect,
   }) =>
       _lock.synchronized<PdfPageImage>(() async {
         if (document.isClosed) {

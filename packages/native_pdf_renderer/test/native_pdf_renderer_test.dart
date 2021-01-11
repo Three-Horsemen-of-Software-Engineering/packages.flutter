@@ -11,7 +11,7 @@ final Uint8List _testData = Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0]);
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final List<MethodCall> log = <MethodCall>[];
-  PdfDocument document;
+  late PdfDocument document;
 
   setUpAll(() async {
     MethodChannel('io.scer.pdf.renderer')
@@ -95,7 +95,7 @@ void main() {
   });
 
   group('Page', () {
-    PdfPage page;
+    late PdfPage page;
 
     test('open', () async {
       // page number 0 - not available
@@ -169,7 +169,7 @@ void main() {
         throwsA(isInstanceOf<PdfPageAlreadyClosedException>()),
       );
       expect(
-        page.render,
+        () => page.render(width: 1, height: 1),
         throwsA(isInstanceOf<PdfPageAlreadyClosedException>()),
       );
     });

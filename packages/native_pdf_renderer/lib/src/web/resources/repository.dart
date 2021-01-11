@@ -4,17 +4,17 @@ abstract class Repository<T> {
   final _items = <String, T>{};
 
   T get(String id) {
-    if (!_exist(id)) {
+    final item = _items[id];
+    if (item == null) {
       throw RepositoryItemNotFoundException();
+    } else {
+      return item;
     }
-    return _items[id];
   }
 
   void set(String id, T item) {
     _items[id] = item;
   }
-
-  bool _exist(String id) => _items.containsKey(id);
 
   @protected
   void close(String id) {
