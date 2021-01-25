@@ -15,8 +15,7 @@ dependencies:
   device_info: 2.0.0-nullsafety.1
   js: 0.6.3-nullsafety.3
   synchronized: 3.0.0-nullsafety.1
-  uuid:
-    git: https://github.com/Daegalus/dart-uuid.git
+  uuid: 3.0.0-nullsafety.0
   extension:
     git:
       url: https://github.com/Three-Horsemen-of-Software-Engineering/packages.dart.git
